@@ -45,10 +45,23 @@ exports.login = async (req, res, next) => {
     const sqlDirectivo = 'SELECT * FROM directivos WHERE email = ?';
 
     connection.query(sqlEmpleado, [email], async(err, results, fields) => {
-
+      if (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        });
+    }
+    
     if (results.length == 0) {
       //pruebo si es directivo
-      connection.query(sqlDirectivo, [email], async(err, results1, fields) => {
+      connection.query(sqlDirectivo, [email], async(err1, results1, fields) => {
+        if (err1) {
+          return res.status(500).json({
+              ok: false,
+              err1
+          });
+      }
+
         if (!results1[0]) {
           return res.status(401).json({
             ok: false,
@@ -64,9 +77,13 @@ exports.login = async (req, res, next) => {
         const isEqual = storedUser.password == password;
 
         if (!isEqual) {
-          const error = new Error('Wrong password!');
-          error.statusCode = 401;
-          throw error;
+          //const error = new Error('Wrong password!');
+          //error.statusCode = 401;
+          //throw error;
+          return res.status(401).json({
+            ok: false,
+            message: 'Usuario o contraseña incorrectos'
+          });
         }
 
         const token = jwt.sign(
@@ -88,9 +105,13 @@ exports.login = async (req, res, next) => {
     const isEqual = storedUser.password == password;
 
     if (!isEqual) {
-      const error = new Error('Wrong password!');
+      /*const error = new Error('Wrong password!');
       error.statusCode = 401;
-      throw error;
+      throw error;*/
+      return res.status(401).json({
+        ok: false,
+        message: 'Usuario o contraseña incorrectos'
+    });
     }
 
     const token = jwt.sign(

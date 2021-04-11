@@ -35,7 +35,7 @@ app.get('/empleados/:id', (req, res) =>{
             res.status(200).json({empleado: empleado});
             //res.json({empleado: results[0], ok:true});
         } else {
-            res.send("No hay empleados");
+            res.send("No está ese empleado");
         }
     });
 });
@@ -57,9 +57,6 @@ app.post('/addEmpleado', (req, res) =>{
       });
 });
 
-
-
-//Add usuarios
 
 module.exports = app;
 

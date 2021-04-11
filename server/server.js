@@ -23,6 +23,8 @@ app.use(require('./routes/directivo'));
 
 app.use(require('./routes/loginPrueba'));
 
+app.use(require('./routes/test'));
+
 app.listen(app.get('port'), () => {
     console.log('Server on port ', app.get('port'));
 });
