@@ -3,6 +3,7 @@ const app = express();
 app.use(express.json());
 //const router = express.Router();
 
+const bcrypt = require('bcryptjs');
 const connection = require('../database');
 
 //Todos los usuarios
@@ -40,12 +41,15 @@ app.get('/empleados/:id', (req, res) =>{
     });
 });
 
-app.post('/addEmpleado', (req, res) =>{
+app.post('/addEmpleado', async(req, res) =>{
     const sql = 'INSERT INTO empleados SET ?';
 
+    const password = req.body.password;
+    const hashedPassword = await bcrypt.hash(password, 12);
+    console.log(hashedPassword);
     const empleadoObJ = {
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         nombre: req.body.nombre,
         apellido: req.body.apellido,
         estadoSalud: req.body.estadoSalud,

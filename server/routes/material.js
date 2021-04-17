@@ -48,8 +48,4 @@ app.post('/addMaterial', (req, res) =>{
       });
 });
 
-
-
-//Add usuarios
-
 module.exports = app;

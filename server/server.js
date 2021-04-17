@@ -17,12 +17,9 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use(require('./routes/empleado'));
-/*app.use(require('./routes/material'));
-app.use(require('./routes/login'));*/
+/*app.use(require('./routes/material'));*/
+app.use(require('./routes/login'));
 app.use(require('./routes/directivo'));
-
-app.use(require('./routes/loginPrueba'));
-
 app.use(require('./routes/test'));
 
 app.listen(app.get('port'), () => {
