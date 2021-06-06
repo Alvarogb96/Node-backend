@@ -6,7 +6,7 @@ require('dotenv').config()
 exports.login = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
+  if(email !== '' && password !== ''){
   const sqlEmpleado = 'SELECT * FROM empleados WHERE email = ?';
   const sqlDirectivo = 'SELECT * FROM directivos WHERE email = ?';
   const sqlEmpresa = 'SELECT * FROM empresa WHERE email = ?';
@@ -27,26 +27,27 @@ exports.login = async (req, res) => {
             err1
           });
         }
-
+        console.log(results1);
         if (results1.length == 0) {
           /*return res.status(401).json({
             ok: false,
             message: 'Email o contraseña incorrectos'
           });*/
-          connection.query(sqlEmpresa, [email], (err1, results1) => {
+          connection.query(sqlEmpresa, [email], async (err1, results2) => {
             if (err1) {
               return res.status(500).json({
                 ok: false,
                 err1
               });
             }
-            const empresa = results1[0];
-            console.log(empresa);
+            console.log(results2.length);
+            if (results2.length > 0) {
+            const empresa = results2[0];
             let tipo = 'empresa';
             console.log(tipo);
 
-            //const isEqual = await bcrypt.compare(password, storedUser.password);
-            const isEqual = (password == empresa.password);
+            const isEqual = await bcrypt.compare(password, storedUser.password);
+            //const isEqual = (password == empresa.password);
 
             if (!isEqual) {
               return res.status(401).json({
@@ -64,6 +65,12 @@ exports.login = async (req, res) => {
               { expiresIn: process.env.JWT_EXPIRES_IN }
             );
             res.status(200).json({ token: token, empresaId: empresa.idempresa, tipo });
+            } else {
+              return res.status(401).json({
+                ok: false,
+                message: 'Email o contraseña incorrectos'
+              });
+            }
           });
         } else {
           const storedUser = results1[0];
@@ -114,4 +121,5 @@ exports.login = async (req, res) => {
       res.status(200).json({ token: token, userId: storedUser.idempleado, tipo });
     }
   });
+}
 };
