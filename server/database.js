@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : 'root',
-  database : 'espacioLibreCOVID19'
+  database : 'espacio_libre_covid19'
 });
  
 connection.connect(function (err){
