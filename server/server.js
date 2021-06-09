@@ -20,12 +20,11 @@ app.use((req, res, next) => {
 
 
 //ROUTES
+app.use(require('./routes/test'));
 app.use(require('./routes/usuario'));
 app.use(require('./routes/noticia'));
-/*app.use(require('./routes/material'));*/
 app.use(require('./routes/login'));
-app.use(require('./routes/directivo'));
-app.use(require('./routes/test'));
+
 
 app.listen(app.get('port'), () => {
     console.log('Server on port ', app.get('port'));
