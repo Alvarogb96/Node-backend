@@ -2,14 +2,15 @@ const connection = require('../database');
 
 exports.addNoticia = async(req, res) => {
     const sql = 'INSERT INTO noticias SET ?';
-    const noticiaObJ = {
-        titulo: req.body.titulo,
-        descripcion: req.body.descripcion,
-    };
-    connection.query(sql, noticiaObJ, error => {
+    if(req.body.role == 'com'){
+    const noticia = req.body.noticia;
+    connection.query(sql, noticia, error => {
         if (error) throw error;
         res.send('Noticia añadida');
       });
+    } else {
+        res.status(500).send('No tiene los permisos para registrar noticias en el sistema')
+    }
 }
 
 exports.readNoticia = (req, res) =>{
