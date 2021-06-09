@@ -133,7 +133,6 @@ exports.login = async (req, res) => {
   const password = req.body.password;
   if (email !== '' && email !== undefined && password !== '' && password !== undefined) {
     const queryLogin = 'SELECT * FROM usuarios WHERE email = ?';
-
     connection.query(queryLogin, [email], async (err, results) => {
       if (err) {
         return res.status(500).json({
@@ -141,22 +140,18 @@ exports.login = async (req, res) => {
           err
         });
       }
-
       if (results.length == 0) {
         return res.status(401).json({
           ok: false,
-          message: 'Email o contraseña incorrectos'
+          message: 'Email o password incorrecto'
         });
       } else {
         const storedUsuario = results[0];
-        //const isEqual = await bcrypt.compare(password, storedUsuario.password);
-
-        const isEqual = password == storedUsuario.password;
-
+        const isEqual = await bcrypt.compare(password, storedUsuario.password);
         if (!isEqual) {
           return res.status(401).json({
             ok: false,
-            message: 'Email o contraseña incorrectos'
+            message: 'Email o password incorrecto'
           });
         }
         const token = jwt.sign(
@@ -167,13 +162,13 @@ exports.login = async (req, res) => {
           process.env.JWT_KEY,
           { expiresIn: process.env.JWT_EXPIRES_IN }
         );
-        res.status(200).json({ token: token, userId: storedUsuario.id_usuario, storedUsuario });
+        res.status(200).json({ token: token, userId: storedUsuario.id_usuario, role: storedUsuario.role, storedUsuario });
       }
     });
   } else {
     return res.status(401).json({
       ok: false,
-      message: 'Email o contraseña incorrectos'
+      message: 'Email o password incorrecto'
     });
   }
 };

@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 
 
 //ROUTES
-app.use(require('./routes/empleado'));
+app.use(require('./routes/usuario'));
 /*app.use(require('./routes/material'));*/
 app.use(require('./routes/login'));
 app.use(require('./routes/directivo'));
