@@ -2,7 +2,7 @@ const connection = require('../database');
 
 exports.addNoticia = async(req, res) => {
     const sql = 'INSERT INTO noticias SET ?';
-    if(req.body.role == 'com'){
+    if(req.body.role == process.env.ROLE_EMPRESA){
     const noticia = req.body.noticia;
     connection.query(sql, noticia, error => {
         if (error) throw error;

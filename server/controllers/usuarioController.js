@@ -11,7 +11,7 @@ exports.addEmpleado = async(req, res) => {
         nif: req.body.nif,
         fecha_nacimiento: req.body.fecha_nacimiento,
         fecha_incorporacion: req.body.fecha_incorporacion,
-        role: 'emp',
+        role: 'E',
         email: req.body.email,
         password: hashedPassword,
         
@@ -41,7 +41,7 @@ exports.readEmpleado = (req, res) =>{
 }
 
 exports.empleados = (req,res) =>{
-    const sql = 'SELECT * FROM usuarios WHERE role="emp"';
+    const sql = 'SELECT * FROM usuarios WHERE role="'+process.env.ROLE_EMPLEADO+'"';
     connection.query(sql, (err,results)=>{
         
         if(err){
