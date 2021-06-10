@@ -56,8 +56,8 @@ exports.readTestEmpleado = (req, res) =>{
                 err
             });
         } else if(results.length > 0){
-            const test = results[0];
-            res.status(200).json({test: test});
+            const tests = results[0];
+            res.status(200).json({tests: tests});
         } else {
             res.status(404).send('Error en la consulta');
         }
