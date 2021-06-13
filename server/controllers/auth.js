@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const connection = require('../database');
+const connection = require('../config/database');
 require('dotenv').config()
 
 exports.login2 = async (req, res) => {

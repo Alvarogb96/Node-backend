@@ -1,4 +1,4 @@
-const connection = require('../database');
+const connection = require('../config/database');
 
 //Test 
 var Test = function(test){

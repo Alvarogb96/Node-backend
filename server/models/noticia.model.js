@@ -1,4 +1,4 @@
-const connection = require('../database');
+const connection = require('../config/database');
 
 //Usuario 
 var Noticia = function(noticia){
