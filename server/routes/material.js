@@ -5,7 +5,7 @@ app.use(express.json());
 
 const connection = require('../database');
 
-//Todos los usuarios
+
 app.get('/materiales', (req, res) =>{
     const sql = 'SELECT * FROM materiales';
     connection.query(sql, (err,results)=>{

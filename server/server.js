@@ -5,6 +5,9 @@ const cors = require('cors')
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);
+app.listen(app.get('port'), () => {
+    console.log('Server on port ', app.get('port'));
+});
 
 //MIDDLEWARES
 app.use(express.json());
@@ -25,11 +28,4 @@ app.use(require('./routes/test'));
 app.use(require('./routes/usuario'));
 app.use(require('./routes/noticia'));
 app.use(require('./routes/jornada'));
-app.use(require('./routes/jornada'));
 
-
-
-
-app.listen(app.get('port'), () => {
-    console.log('Server on port ', app.get('port'));
-});

@@ -1,17 +1,19 @@
 const express = require('express');
 const router = express.Router();
 router.use(express.json());
-const usuarioController = require('../controllers/usuarioController');
+const usuarioController = require('../controllers/usuario.controller');
 
 //Todos los empleados
-router.get('/empleados', usuarioController.empleados);
+router.get('/empleados', usuarioController.findAll);
 
 //Obtener empleado por id
-router.get('/empleados/:id', usuarioController.readEmpleado);
+router.get('/empleados/:id', usuarioController.findById);
 
-//Añadir empleado
-router.post('/addEmpleado', usuarioController.addEmpleado);
+//Añadir usuario
+router.post('/addUsuario', usuarioController.create);
 
+//Actualizar usuario
+router.put('/updateUsuario/:id', usuarioController.update);
 
 module.exports = router;
 
