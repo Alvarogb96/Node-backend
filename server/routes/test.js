@@ -3,7 +3,7 @@ const router = express.Router();
 router.use(express.json());
 const testController = require('../controllers/test.controller');
 
-//Todos los noticias
+//Todos los test
 router.get('/tests', testController.findAll);
 
 //Añadir test

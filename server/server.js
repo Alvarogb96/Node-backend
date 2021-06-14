@@ -28,4 +28,5 @@ app.use(require('./routes/test'));
 app.use(require('./routes/usuario'));
 app.use(require('./routes/noticia'));
 app.use(require('./routes/jornada'));
+app.use(require('./routes/solicitud_baja'));
 
