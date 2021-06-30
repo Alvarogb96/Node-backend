@@ -1,6 +1,5 @@
 const connection = require('../config/database');
-
-//Usuario 
+ 
 var Noticia = function(noticia){
     this.titulo                = noticia.titulo;
     this.descripcion           = noticia.descripcion;
