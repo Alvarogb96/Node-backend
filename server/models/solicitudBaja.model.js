@@ -1,18 +1,18 @@
 const connection = require('../config/database');
 
 //Solicitud_Baja
-var Solicitud_Baja= function(solicitud_Baja){
-    this.id_empleado           = solicitud_Baja.id_empleado;
-    this.id_directivo          = solicitud_Baja.id_directivo;
-    this.motivo                = solicitud_Baja.motivo;
-    this.fecha_solicitud       = solicitud_Baja.fecha_solicitud;
-    this.fecha_aprobacion      = solicitud_Baja.fecha_aprobacion;
-    this.fecha_baja            = solicitud_Baja.fecha_baja;
-    this.fecha_alta            = solicitud_Baja.fecha_alta;
-    this.aprobada              = solicitud_Baja.aprobada;
+var SolicitudBaja= function(solicitudBaja){
+    this.id_empleado           = solicitudBaja.id_empleado;
+    this.id_directivo          = solicitudBaja.id_directivo;
+    this.motivo                = solicitudBaja.motivo;
+    this.fecha_solicitud       = solicitudBaja.fecha_solicitud;
+    this.fecha_aprobacion      = solicitudBaja.fecha_aprobacion;
+    this.fecha_baja            = solicitudBaja.fecha_baja;
+    this.fecha_alta            = solicitudBaja.fecha_alta;
+    this.aprobada              = solicitudBaja.aprobada;
 };
 
-Solicitud_Baja.findAll = function (result) {
+SolicitudBaja.findAll = function (result) {
     const sql = 'SELECT * FROM solicitudes_baja';
     connection.query(sql, function (err, res) {
         if(err) {
@@ -24,7 +24,7 @@ Solicitud_Baja.findAll = function (result) {
     });   
 };
 
-Solicitud_Baja.findById = function (id, result) {
+SolicitudBaja.findById = function (id, result) {
     const sql = 'SELECT * FROM solicitudes_baja WHERE id_solicitud_baja=?';
     connection.query(sql, id, function (err, res) {             
         if(err) {
@@ -36,7 +36,7 @@ Solicitud_Baja.findById = function (id, result) {
     });   
 };
 
-Solicitud_Baja.findByIdEmpleado = function (id, result) {
+SolicitudBaja.findByIdEmpleado = function (id, result) {
     const sql = 'SELECT * FROM solicitudes_baja WHERE id_empleado =?';
     connection.query(sql, id, function (err, res) {             
         if(err) {
@@ -48,9 +48,9 @@ Solicitud_Baja.findByIdEmpleado = function (id, result) {
     });   
 };
 
-Solicitud_Baja.create = function (solicitud_Baja, result) {   
+SolicitudBaja.create = function (solicitudBaja, result) {   
     const sql = 'INSERT INTO solicitudes_baja SET ?';
-    connection.query(sql, solicitud_Baja, function (err, res) {
+    connection.query(sql, solicitudBaja, function (err, res) {
         if(err) {
             console.log(err);
             result(err, null);
@@ -61,9 +61,9 @@ Solicitud_Baja.create = function (solicitud_Baja, result) {
     });           
 };
 
-Solicitud_Baja.update = function(id, solicitud_Baja, result){
+SolicitudBaja.update = function(id, solicitudBaja, result){
     const sql = 'UPDATE solicitudes_baja SET ? WHERE id_solicitud_baja= ?';
-    connection.query(sql, [solicitud_Baja, id], function (err, res) {
+    connection.query(sql, [solicitudBaja, id], function (err, res) {
         if(err) {
             result(null, err);
         }else{   
@@ -72,4 +72,4 @@ Solicitud_Baja.update = function(id, solicitud_Baja, result){
     }); 
 };
 
-module.exports= Solicitud_Baja;
+module.exports= SolicitudBaja;

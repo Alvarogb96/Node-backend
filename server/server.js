@@ -28,5 +28,7 @@ app.use(require('./routes/test'));
 app.use(require('./routes/usuario'));
 app.use(require('./routes/noticia'));
 app.use(require('./routes/jornada'));
-app.use(require('./routes/solicitud_baja'));
+app.use(require('./routes/solicitudBaja'));
+app.use(require('./routes/solicitudEpi'));
+app.use(require('./routes/tipoEpi.js'));
 
