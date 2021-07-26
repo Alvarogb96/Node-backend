@@ -97,8 +97,9 @@ exports.create = function (req, res) {
                     episSolicitados.push(episTipo[0]);
                 } else {
                     create = false;
-                    res.status(404).json({
-                        tipo: epi.id_tipo_epi,
+                    res.json({
+                        error:true,
+                        message:err,
                         mensaje: "No hay suficiente cantidad del equipo de protección"
                     });
                 }
@@ -128,9 +129,9 @@ exports.create = function (req, res) {
                         }, [])
                         SolicitudEpi.createSolicitudEpis(arrayMateriales, function (err, materialesSolicitud) {
                             if (err) {
-                                throw err;
+                                res.json({error:true,message:err})
                             } else {
-                                res.send('Solicitud de equipo de protección individual añadida');
+                                res.json({error:false,message:"Solicitud Añadida",data:materialesSolicitud})
                             }
                         });
                     }
@@ -171,6 +172,19 @@ exports.update = function(req, res){
     if(success = true){
         res.send('Solicitud actualizada correctamente');
     }
+    
+};
+
+exports.findAllAvailable = function (req, res) {
+        EquipoProteccionIndividual.findAllAvailable(function (err, epis) {
+            if (err) {
+                console.log(err)
+            } else if (epis.length > 0) {
+                res.status(200).json({ epis });
+            } else {
+                res.send("No hay equipos de protección registrados en el sistema.");
+            }
+        });
     
 };
 

@@ -47,16 +47,16 @@ exports.findByIdEmpleado = function(req, res) {
 };
 
 exports.create =  function(req, res) {
-    const solicitudBaja = new SolicitudBaja(req.body.solicitudBaja);
+    const solicitudBaja = new SolicitudBaja(req.body);
 //    if(!validation(Solicitud_Baja)){
 //         res.status(400).send({ error:true, message: 'Valores incorrectos' });
     // }else{
         SolicitudBaja.create(solicitudBaja, function(err, solicitudBaja) {
             if (err) {
-            throw err;
-            } else {
-            res.send('Solicitud de baja añadida');
-            }
+                throw err;
+                } else {
+                    res.json({error:false,message:"Solicitud de baja añadida",data:solicitudBaja});
+                }
         });
     // }
 };
@@ -71,5 +71,48 @@ exports.update = function(req, res) {
             res.send('Solicitud actualizada correctamente');
         });
     }
-  
 };
+    
+exports.subirFile = function(req, res){
+    console.log(req.files);
+    req.files.file.path = req.files.file.name;
+    console.log(req.files);
+    res.json({
+        'message': 'File uploaded successfully'
+    });
+};
+
+exports.subirArchivo = function(req,res){
+    console.log(req.file);
+    if (!req.file) {
+        console.log("No file is available!");
+        return res.send({
+          success: false
+        });
+    
+      } else {
+        console.log('File is available!');
+        return res.send({
+          success: true
+        })
+      }
+}
+
+
+
+
+// POST File
+// router.post('/upload', upload.single('file'), function (req, res) {
+//     if (!req.file) {
+//       console.log("No file is available!");
+//       return res.send({
+//         success: false
+//       });
+  
+//     } else {
+//       console.log('File is available!');
+//       return res.send({
+//         success: true
+//       })
+//     }
+//   });

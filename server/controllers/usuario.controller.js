@@ -36,7 +36,7 @@ exports.findById = function(req, res) {
         if (err)
         res.send(err);
         if(empleado.length > 0){
-            res.status(200).json({usuario: empleado});
+            res.status(200).json({empleado: empleado[0]});
         } else {
             res.status(404).send('Empleado no registrado en el sistema')
         }

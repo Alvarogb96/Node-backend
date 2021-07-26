@@ -61,8 +61,9 @@ SolicitudEpi.findMaterialesSolicitud = function (id, result) {
 };
 
 SolicitudEpi.findByIdEmpleadoMateriales = function (id, result) {
-    const sql = 'SELECT  mat.* , eq.* FROM solicitudes_epi soli INNER JOIN materiales_solicitud mat ON soli.id_solicitud = mat.id_solicitud_epi ' +
-    'INNER JOIN equipos_proteccion_individual eq on mat.id_material = eq.id_epi WHERE id_empleado =?';
+    const sql = 'SELECT  mat.* , eq.*, te.* FROM solicitudes_epi soli INNER JOIN materiales_solicitud mat ON soli.id_solicitud = mat.id_solicitud_epi ' +
+    'INNER JOIN equipos_proteccion_individual eq on mat.id_material = eq.id_epi ' +
+    'INNER JOIN tipos_epi te on eq.id_tipo = te.id_tipo_epi WHERE id_empleado =?';
     connection.query(sql, id, function (err, res) {             
         if(err) {
             result(err, null);
@@ -74,7 +75,7 @@ SolicitudEpi.findByIdEmpleadoMateriales = function (id, result) {
 };
 
 SolicitudEpi.findByIdEmpleado = function (id, result) {
-    const sql = 'SELECT DISTINCT soli.*  FROM solicitudes_epi soli WHERE id_empleado =?';
+    const sql = 'SELECT DISTINCT soli.*  FROM solicitudes_epi soli WHERE id_empleado =? ORDER BY soli.fecha_solicitud desc';
     connection.query(sql, id, function (err, res) {             
         if(err) {
             result(err, null);

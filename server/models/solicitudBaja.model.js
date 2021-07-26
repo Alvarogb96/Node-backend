@@ -1,4 +1,6 @@
 const connection = require('../config/database');
+const multer = require('multer');
+var upload = multer({ dest: 'files/solicitudesBaja/' })
 
 //Solicitud_Baja
 var SolicitudBaja= function(solicitudBaja){
@@ -49,6 +51,7 @@ SolicitudBaja.findByIdEmpleado = function (id, result) {
 };
 
 SolicitudBaja.create = function (solicitudBaja, result) {   
+    upload.single('solicitud');
     const sql = 'INSERT INTO solicitudes_baja SET ?';
     connection.query(sql, solicitudBaja, function (err, res) {
         if(err) {
@@ -70,6 +73,10 @@ SolicitudBaja.update = function(id, solicitudBaja, result){
             result(null, res);
         }
     }); 
+};
+
+SolicitudBaja.saveSolicitudBaja = function(){
+    upload
 };
 
 module.exports= SolicitudBaja;

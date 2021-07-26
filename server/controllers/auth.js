@@ -143,7 +143,7 @@ exports.login = async (req, res) => {
       if (results.length == 0) {
         return res.status(401).json({
           ok: false,
-          message: 'Email o password incorrecto'
+          message: 'Correo electrónico erróneo'
         });
       } else {
         const storedUsuario = results[0];
@@ -151,7 +151,7 @@ exports.login = async (req, res) => {
         if (!isEqual) {
           return res.status(401).json({
             ok: false,
-            message: 'Email o password incorrecto'
+            message: 'Contraseña incorrecta'
           });
         }
         const token = jwt.sign(

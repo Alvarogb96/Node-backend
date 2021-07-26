@@ -7,10 +7,10 @@ const tipoEpiController = require('../controllers/tipoEpi.controller');
 //Todos los tipos de epi
 router.get('/tiposEpi', tipoEpiController.findAll);
 
-//Obtener noticia por id
+//Obtener tipo de epi por id
 router.get('/tiposEpi/:id', tipoEpiController.findById);
 
-//Añadir noticia
+//Añadir tipo de epi
 router.post('/addTipoEpi', tipoEpiController.create);
 
 

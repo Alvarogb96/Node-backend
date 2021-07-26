@@ -44,5 +44,18 @@ EquipoProteccionIndividual.updateCantidad = function(id, cantidad, result){
     }); 
 };
 
+EquipoProteccionIndividual.findAllAvailable = function (result) {
+    const sql = 'SELECT id_tipo,MAX(cantidad) AS cantidad,descripcion,image FROM equipos_proteccion_individual INNER JOIN tipos_epi' +
+     ' on tipos_epi.id_tipo_epi = equipos_proteccion_individual.id_tipo WHERE oculto = "N" GROUP BY id_tipo;';
+    connection.query(sql, function (err, res) {
+        if(err) {
+            result(null, err);
+        }
+        else{
+            result(null, res);
+        }
+    });   
+};
+
 
 module.exports = EquipoProteccionIndividual;

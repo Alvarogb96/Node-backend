@@ -54,7 +54,7 @@ Test.create = function (test, result) {
             result(err, null);
         }
         else{
-            result(null, res);
+            result(null, res.insertId);
         }
     });           
 };

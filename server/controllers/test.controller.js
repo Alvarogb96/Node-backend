@@ -47,15 +47,15 @@ exports.findByIdEmpleado = function(req, res) {
 };
 
 exports.create = async function(req, res) {
-    const test = new Test(req.body.test);
+    const test = new Test(req.body);
 //    if(!validation(test)){
 //         res.status(400).send({ error:true, message: 'Valores incorrectos' });
     // }else{
-        Test.create(test, function(err, test) {
+        Test.create(test, function(err, result) {
             if (err) {
             throw err;
             } else {
-            res.send('Test añadido');
+                res.json({error:false,message:"Test añadido",data:result});
             }
         });
     // }

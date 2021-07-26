@@ -20,5 +20,10 @@ router.post('/addSolicitudEpi', solicitudEpiController.create);
 //Actualizar Solicitud de epi
 router.put('/updateSolicitudEpi', solicitudEpiController.update);
 
+//Todos los epis disponibles
+router.get('/episDisponibles', solicitudEpiController.findAllAvailable);
+
+
+
 
 module.exports = router;
