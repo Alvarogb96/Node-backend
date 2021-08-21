@@ -33,6 +33,20 @@ EquipoProteccionIndividual.update = function(id, epi, result){
     }); 
 };
 
+EquipoProteccionIndividual.create = function (epi, result) {  
+    const sql = 'INSERT INTO equipos_proteccion_individual SET ?';
+    
+    connection.query(sql, epi, function (err, res) {
+        if(err) {
+            console.log(err);
+            result(err, null);
+        }
+        else{
+            result(null, res);
+        }
+    });           
+};
+
 EquipoProteccionIndividual.updateCantidad = function(id, cantidad, result){
     const sql = 'UPDATE equipos_proteccion_individual SET cantidad = cantidad + ? WHERE id_epi = ?';
     connection.query(sql, [cantidad, id], function (err, res) {
@@ -50,6 +64,34 @@ EquipoProteccionIndividual.findAllAvailable = function (result) {
     connection.query(sql, function (err, res) {
         if(err) {
             result(null, err);
+        }
+        else{
+            result(null, res);
+        }
+    });   
+};
+
+EquipoProteccionIndividual.findAllEpis = function (result) {
+    const sql = 'SELECT id_epi,cantidad,descripcion,lote FROM equipos_proteccion_individual INNER JOIN tipos_epi' +
+    ' on tipos_epi.id_tipo_epi = equipos_proteccion_individual.id_tipo';
+    connection.query(sql, function (err, res) {
+        if(err) {
+            result(null, err);
+        }
+        else{
+            result(null, res);
+        }
+    });   
+};
+
+EquipoProteccionIndividual.getEpisAnalisis= function ( result) {
+    const sql = 'SELECT id_tipo, descripcion,  sum(cantidad) as cantidad ' + 
+    'FROM equipos_proteccion_individual ' + 
+    'INNER JOIN tipos_epi on tipos_epi.id_tipo_epi = equipos_proteccion_individual.id_tipo ' +
+    'GROUP BY id_tipo;';
+    connection.query(sql,function (err, res) {             
+        if(err) {
+            result(err, null);
         }
         else{
             result(null, res);
