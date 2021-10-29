@@ -5,4 +5,4 @@
 /node_modules
 
 # archivos
-/server/**/*.pdf
+files/**/*.pdf
