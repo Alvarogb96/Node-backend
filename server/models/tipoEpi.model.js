@@ -1,7 +1,10 @@
 const connection = require('../config/database');
 
 var TipoEpi = function(tipoEpi){
-    this.descripcion                = tipoEpi.descripcion;
+    this.descripcion  = tipoEpi.descripcion;
+    this.image = tipoEpi.image;
+    this.fecha_creacion = tipoEpi.fecha_creacion;
+    this.fecha_actualizacion = tipoEpi.fecha_actualizacion;
 };
 
 TipoEpi.create = function (tipoEpi, result) {   
@@ -9,7 +12,6 @@ TipoEpi.create = function (tipoEpi, result) {
     
     connection.query(sql, tipoEpi, function (err, res) {
         if(err) {
-            console.log(err);
             result(err, null);
         }
         else{

@@ -1,10 +1,11 @@
 const SolicitudBaja = require('../models/solicitudBaja.model');
+const path = require('path');
 
 exports.findAll = function (req, res) {
     if (req.body.role === process.env.ROLE_DIRECTIVO) {
         SolicitudBaja.findAll(function (err, solicitudesBaja) {
             if (err) {
-                console.log(err)
+                res.json({error:true,err});
             } else if (solicitudesBaja.length > 0) {
                 res.status(200).json({ solicitudesBaja });
             } else {
@@ -46,52 +47,50 @@ exports.findByIdEmpleado = function(req, res) {
     });
 };
 
+exports.findByParameters = function (req, res) {
+        SolicitudBaja.findByParameters(req.body,function (err, solicitudesBaja) {
+            if (err) {
+                res.json({error:true,err});
+            } else if (solicitudesBaja.length > 0) {
+                res.status(200).json({ solicitudesBaja });
+            } else {
+                res.status(404).send('Error en la consulta de solicitudes con esos parámetros')
+            }
+        });
+};
+
 exports.create =  function(req, res) {
     const solicitudBaja = new SolicitudBaja(req.body);
-//    if(!validation(Solicitud_Baja)){
-//         res.status(400).send({ error:true, message: 'Valores incorrectos' });
-    // }else{
         SolicitudBaja.create(solicitudBaja, function(err, solicitudBaja) {
             if (err) {
-                throw err;
+                res.json({error:true,err});
                 } else {
                     res.json({error:false,message:"Solicitud de baja añadida",data:solicitudBaja});
                 }
         });
-    // }
 };
 
 exports.update = function(req, res) {
-    if(req.body.constructor === Object && Object.keys(req.body.solicitudBaja).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        SolicitudBaja.update(req.params.id, new SolicitudBaja(req.body.solicitudBaja), function(err, solicitudBaja) {
-            if (err)
-            res.send(err);
-            res.send('Solicitud actualizada correctamente');
+    const solicitudBaja = req.body;
+        SolicitudBaja.update(solicitudBaja.id_solicitud_baja,solicitudBaja, function(err, solicitudBaja) {
+            if (err){
+                res.json({error:true,err});
+            }
+            else {
+                res.json({error:false,message:"Solicitud actualizada",data:solicitudBaja})
+            }
         });
-    }
 };
     
-exports.subirFile = function(req, res){
-    console.log(req.files);
-    req.files.file.path = req.files.file.name;
-    console.log(req.files);
-    res.json({
-        'message': 'File uploaded successfully'
-    });
-};
-
 exports.subirArchivo = function(req,res){
-    console.log(req.file);
     if (!req.file) {
-        console.log("No file is available!");
+        console.log("Archivo disponible");
         return res.send({
           success: false
         });
     
       } else {
-        console.log('File is available!');
+        console.log('Archivo no disponible');
         return res.send({
           success: true
         })
@@ -99,20 +98,43 @@ exports.subirArchivo = function(req,res){
 }
 
 
+exports.descargarArchivo = function(req,res){
+    const file = path.resolve(`./files/solicitudesBaja/`+ req.params.nombreArchivo);    
+    res.download(file); 
+}
 
 
-// POST File
-// router.post('/upload', upload.single('file'), function (req, res) {
-//     if (!req.file) {
-//       console.log("No file is available!");
-//       return res.send({
-//         success: false
-//       });
-  
-//     } else {
-//       console.log('File is available!');
-//       return res.send({
-//         success: true
-//       })
-//     }
-//   });
+
+exports.getBajasAnalisis = function (req, res) {
+    bajas = [];
+    altas = [];
+    SolicitudBaja.getBajasAnalisis(function (err, solicitudesBajas) {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        } else if (solicitudesBajas.length > 0) {
+            bajas = solicitudesBajas;
+            SolicitudBaja.getAltasAnalisis(function (err, solicitudesAltas) {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                } else if (solicitudesAltas.length > 0) {
+                    altas = solicitudesAltas;
+                    res.status(200).json({ bajas,  altas});
+                } else {
+                    res.send("No hay solicitudes en el sistema.");
+                }
+            });
+        } else {
+            res.send("No hay solicitudes en el sistema.");
+        }
+    });
+
+    
+
+};
+

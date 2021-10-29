@@ -34,4 +34,8 @@ app.use(require('./routes/solicitudEpi'));
 app.use(require('./routes/tipoEpi.js'));
 app.use(require('./routes/tipoTest.js'));
 app.use(require('./routes/equipoProteccionIndividual.js'));
+app.use(require('./routes/sucursal.js'));
+app.use(require('./routes/vacuna.js'));
+app.use(require('./routes/tipoVacuna.js'));
+app.use(require('./routes/stockMinimo.js'));
 

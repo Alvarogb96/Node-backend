@@ -1,10 +1,14 @@
 const Test = require('../models/test.model');
+const path = require('path');
 
 exports.findAll = function (req, res) {
     if (req.body.role === process.env.ROLE_DIRECTIVO) {
         Test.findAll(function (err, tests) {
             if (err) {
-                console.log(err)
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
             } else if (tests.length > 0) {
                 res.status(200).json({ tests });
             } else {
@@ -48,9 +52,10 @@ exports.findByIdEmpleado = function(req, res) {
 
 exports.create = async function(req, res) {
     const test = new Test(req.body);
-//    if(!validation(test)){
-//         res.status(400).send({ error:true, message: 'Valores incorrectos' });
-    // }else{
+    var mensaje = Test.validation(test);
+   if(mensaje != true){
+        res.status(400).send({ error:true, message: 'Valor incorrecto de ' + mensaje });
+    }else{
         Test.create(test, function(err, result) {
             if (err) {
             throw err;
@@ -58,18 +63,57 @@ exports.create = async function(req, res) {
                 res.json({error:false,message:"Test añadido",data:result});
             }
         });
-    // }
+     }
 };
 
-exports.update = function(req, res) {
-    if(req.body.constructor === Object && Object.keys(req.body.test).length === 0){
-        res.status(400).send({ error:true, message: 'Please provide all required field' });
-    }else{
-        Test.update(req.params.id, new Test(req.body.test), function(err, test) {
-            if (err)
-            res.send(err);
-            res.send('Test actualizado correctamente');
+exports.delete = function(req, res) {
+    const test = new Test(req.body);
+    var mensaje = Test.validation(test);
+    if(mensaje != true){
+        res.status(400).send({ error:true, message: 'Valor incorrecto de ' + mensaje });
+    } else {
+        Test.delete(test, function(err, test) {
+            if (err) {
+                res.json({error:true,err});
+                } else {
+                    res.json({error:false,message:"Test eliminado"});
+                }
         });
     }
   
+};
+
+exports.update = function(req, res) {
+    const test = new Test(req.body);
+    var mensaje = Test.validation(test);
+    if(mensaje != true){
+        res.status(400).send({ error:true, message: 'Valor incorrecto de ' + mensaje });
+    }else{
+        Test.update(test.id_test,test, function(err, test) {
+            if (err){
+                res.json({error:true,err});
+            }
+            else {
+                res.json({error:false,message:"Test actualizado"})
+            }
+        });
+    }
+};
+
+exports.subirArchivo = function(req,res){
+    if (!req.file) {
+        return res.send({
+          success: false
+        });
+    
+      } else {
+        return res.send({
+          success: true
+        })
+      }
+};
+
+exports.descargarArchivo = function(req,res){
+    const file = path.resolve(`./files/tests/`+ req.params.nombreArchivo);    
+    res.download(file); 
 };

@@ -2,11 +2,7 @@ const express = require('express');
 const router = express.Router();
 router.use(express.json());
 const solicitudBajaController = require('../controllers/solicitudBaja.controller');
-const path = require('path');
-
-
 multer = require('multer')
-
 const PATH = './files/solicitudesBaja';
 
 let storage = multer.diskStorage({
@@ -27,6 +23,9 @@ let upload = multer({
 //Todos las solicitudes de baja
 router.get('/solicitudesBaja', solicitudBajaController.findAll);
 
+//Todos las solicitudes de baja(Con filtros de busqueda)
+router.post('/solicitudesBajaByParameters', solicitudBajaController.findByParameters);
+
 //Añadir Solicitud de baja
 router.post('/addSolicitudBaja', solicitudBajaController.create);
 
@@ -37,26 +36,16 @@ router.get('/solicitudBaja/:id', solicitudBajaController.findById);
 router.get('/solicitudesBaja/:id', solicitudBajaController.findByIdEmpleado);
 
 //Actualizar Solicitud_baja
-router.put('/updateSolicitudBaja/:id', solicitudBajaController.update);
+router.put('/updateSolicitudBaja', solicitudBajaController.update);
 
 // POST File
 router.post('/uploadFileBaja', upload.single('file'),solicitudBajaController.subirArchivo);
 
 
-// router.get('/downloadFileBaja', function (req, res, next) {
-//     var filePath = "./files/solicitudesBaja"; // Or format the path using the `id` rest param
-//     var fileName = "factura-macnificos-1135464.pdf"; // The default name the browser will use
+router.get( "/downloadFileBaja/:nombreArchivo", solicitudBajaController.descargarArchivo);
 
-//     res.download("./files", "prueba.txt");    
-// });
-
-router.get( "/downloadFileBaja", (req, res) => {
-    const file = path.resolve(`./files/solicitudesBaja/factura-macnificos-1135464.pdf`);
-    //No need for special headers
-
-    
-    res.download(file); 
-})
+//Solicitudes de baja(análisis)
+router.get('/getBajasAnalisis/', solicitudBajaController.getBajasAnalisis);
 
 
 module.exports = router;

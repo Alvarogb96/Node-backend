@@ -1,13 +1,13 @@
 const connection = require('../config/database');
 
-var TipoTest = function(tipoTest){
-    this.nombre = tipoTest.nombre;
+var TipoVacuna = function(tipoVacuna){
+    this.nombre = tipoVacuna.nombre;
 };
 
-TipoTest.create = function (tipoTest, result) {   
-    const sql = 'INSERT INTO tipos_test SET ?';
+TipoVacuna.create = function (tipoVacuna, result) {   
+    const sql = 'INSERT INTO tipos_vacuna SET ?';
     
-    connection.query(sql, tipoTest, function (err, res) {
+    connection.query(sql, tipoVacuna, function (err, res) {
         if(err) {
             result(err, null);
         }
@@ -17,8 +17,8 @@ TipoTest.create = function (tipoTest, result) {
     });           
 };
 
-TipoTest.findById = function (id, result) {
-    const sql = 'SELECT * FROM tipos_test WHERE id_tipo =?';
+TipoVacuna.findById = function (id, result) {
+    const sql = 'SELECT * FROM tipos_vacuna WHERE id_tipo =?';
     connection.query(sql, id, function (err, res) {             
         if(err) {
             result(err, null);
@@ -29,8 +29,8 @@ TipoTest.findById = function (id, result) {
     });   
 };
 
-TipoTest.findAll = function (result) {
-    const sql = 'SELECT * FROM tipos_test';
+TipoVacuna.findAll = function (result) {
+    const sql = 'SELECT * FROM tipos_vacuna';
     connection.query(sql, function (err, res) {
         if(err) {
             result(null, err);
@@ -41,4 +41,4 @@ TipoTest.findAll = function (result) {
     });   
 };
 
-module.exports = TipoTest;
+module.exports = TipoVacuna;

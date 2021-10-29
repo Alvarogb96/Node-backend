@@ -2,10 +2,6 @@ const TipoTest = require('../models/tipoTest.model');
 
 exports.create = async function(req, res) {
     const tipoTest = new TipoTest(req.body.tipoTest);
-//    if(!validation(noticia)){
-//         res.status(400).send({ error:true, message: 'Valores incorrectos' });
-//     }else{
-        if(req.body.role == process.env.ROLE_DIRECTIVO){
             TipoTest.create(tipoTest, function(err, tipoTest) {
             if (err) {
             throw err;
@@ -13,10 +9,6 @@ exports.create = async function(req, res) {
             res.send('Tipo de test añadido');
             }
         });
-        } else {
-            res.status(500).send('No tiene los permisos para registra tipos de tests en el sistema')
-        }
-    // }
 };
 
 exports.findAll = function(req, res) {
@@ -38,7 +30,7 @@ exports.findById = function(req, res) {
         if(tipoTest.length > 0){
             res.status(200).json({tipoTest: tipoTest});
         } else {
-            res.status(404).send('Tipo de equipo de test no registrada en el sistema')
+            res.status(404).send('Tipo de test no registrado en el sistema')
         }
     });
 };

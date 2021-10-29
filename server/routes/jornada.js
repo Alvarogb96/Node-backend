@@ -15,6 +15,9 @@ router.get('/jornadaEmpleado/:id', jornadaController.findByIdEmpleado);
 //Obtener jornada por id de jornada
 router.get('/jornadas/:id', jornadaController.findById);
 
+//Actualizar Jornada por directivo
+router.put('/updateJornadaByDirectivo', jornadaController.update);
+
 
 
 

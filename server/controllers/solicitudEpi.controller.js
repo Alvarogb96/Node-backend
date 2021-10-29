@@ -3,19 +3,47 @@ const EquipoProteccionIndividual = require('../models/equipoProteccionIndividual
 
 
 exports.findAll = function (req, res) {
-    if (req.body.role === process.env.ROLE_DIRECTIVO) {
         SolicitudEpi.findAll(function (err, solicitudesEpi) {
             if (err) {
-                console.log(err)
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
             } else if (solicitudesEpi.length > 0) {
                 res.status(200).json({ solicitudesEpi });
             } else {
                 res.send("No hay solicitudes de equipos de protección individual registradas en el sistema");
             }
         });
-    } else {
-        res.status(500).send('Error permisos');
-    }
+};
+
+exports.findByParameters = function (req, res) {
+        SolicitudEpi.findByParameters(req.body,function (err, solicitudesEpi) {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else if (solicitudesEpi.length > 0) {
+                res.status(200).json({ solicitudesEpi });
+            } else {
+                res.status(404).send('Error en la consulta de solicitudes con esos parámetros')
+            }
+        });
+};
+
+exports.findByIdSolicitudMateriales = function(req, res) {
+            SolicitudEpi.findByIdSolicitudMateriales(req.params.id, function (err, materialesSolicitud) {
+                if (err)
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                else {
+                    res.status(200).json({materialesSolicitud: materialesSolicitud});
+                }
+                
+            });
 };
 
 exports.findById = function(req, res) {
@@ -66,7 +94,6 @@ exports.findByIdEmpleado = function(req, res) {
                 }
                 res.status(200).json({solicitudesEpiEmpleado: solicitudesEpiEmpleado});
             });
-            //res.status(200).json({solicitudesEpi: solicitudesEpi});
         } else {
             res.status(404).send('Error consulta')
         }
@@ -77,23 +104,22 @@ exports.create = function (req, res) {
     const solicitudEpi = req.body.solicitudEpi;
     var epis = req.body.epis;
     var id = null;
-    //    if(!validation(Solicitud_Baja)){
-    //         res.status(400).send({ error:true, message: 'Valores incorrectos' });
-    // }else{
-
-    EquipoProteccionIndividual.findAll(function (err, equiposProteccionIndividual) {
+    EquipoProteccionIndividual.findByIdSucursalDisponible(req.body.id_sucursal, solicitudEpi.fecha_creacion, function (err, equiposProteccionIndividual) {
         if (err) {
-            console.log(err)
+            return res.status(400).json({
+                ok: false,
+                err
+            });
         } else if (equiposProteccionIndividual.length > 0) {
             var materialesSolicitados = [];
             var episSolicitados = [];
             var create = true;
             for (var epi of epis) {
-                var episTipo = equiposProteccionIndividual.filter((equipoProteccionIndividual) => (equipoProteccionIndividual.id_tipo === epi.id_tipo_epi) && (equipoProteccionIndividual.cantidad >= epi.cantidad_material));
+                var episTipo = equiposProteccionIndividual.filter((equipoProteccionIndividual) => (equipoProteccionIndividual.id_tipo === epi.id_tipo_epi) && (equipoProteccionIndividual.existencias >= epi.cantidad_material));
                 if (episTipo.length > 0) {
                     materialSolicitud = { id_solicitud_epi: null, id_material: episTipo[0].id_epi, cantidad_material_solicitado: epi.cantidad_material };
                     materialesSolicitados.push(materialSolicitud);
-                    episTipo[0].cantidad = episTipo[0].cantidad - epi.cantidad_material;
+                    episTipo[0].existencias = episTipo[0].existencias - epi.cantidad_material;
                     episSolicitados.push(episTipo[0]);
                 } else {
                     create = false;
@@ -145,16 +171,13 @@ exports.create = function (req, res) {
 
 
 exports.update = function(req, res){
-    const solicitudEpi = req.body.solicitudEpi;
+    const solicitudEpi = req.body;
     var success = true;
 
         SolicitudEpi.update(solicitudEpi.id_solicitud, solicitudEpi, function(err, solicitudEpi) {
             if (err) {
-                success = false;
-                res.send(err);
+                res.json({error:true,err});
             }
-            
-            //res.send('Solicitud actualizada correctamente');
         });
     if(solicitudEpi.aprobada === 'N'){
         SolicitudEpi.findMaterialesSolicitud(solicitudEpi.id_solicitud, function (err, materialesSolicitud){
@@ -170,21 +193,47 @@ exports.update = function(req, res){
     }
 
     if(success = true){
-        res.send('Solicitud actualizada correctamente');
+        res.json({error:false,message:"Solicitud actualizada",data:solicitudEpi})
     }
     
 };
 
-exports.findAllAvailable = function (req, res) {
-        EquipoProteccionIndividual.findAllAvailable(function (err, epis) {
-            if (err) {
-                console.log(err)
-            } else if (epis.length > 0) {
-                res.status(200).json({ epis });
+
+
+exports.getSolicitudesAprobadas = function (req, res) {
+
+    SolicitudEpi.getSolicitudesAprobadas(function (err, solicitudes) {
+        if (err) {
+            res.status(500).send({ error:true, message: err });
+        } else if (solicitudes.length > 0) {
+            res.status(200).json({ solicitudes });
+        } else {
+            res.send('"No hay solicitudes en el sistema')
+        }
+    });
+
+};
+
+exports.delete = function(req, res) {
+    SolicitudEpi.delete(req.params.id, function(err, solicitudEpi) {
+        if (err) {
+            res.json({error:true,err});
             } else {
-                res.send("No hay equipos de protección registrados en el sistema.");
+                SolicitudEpi.findMaterialesSolicitud(solicitudEpi.id_solicitud, function (err, materialesSolicitud){
+                    for(var material of materialesSolicitud){
+                        EquipoProteccionIndividual.updateCantidad(material.id_material, material.cantidad_material_solicitado, function(err, solicitudEpi) {
+                            if (err) {
+                                res.send(err);
+                            } else {
+                                res.json({error:false,message:"Solicitud de equipo de protección individual eliminada"});
+                            }         
+                        });
+                    }
+                });
+                
             }
-        });
-    
+    });
+
+
 };
 
