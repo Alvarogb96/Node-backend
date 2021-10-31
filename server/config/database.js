@@ -10,7 +10,8 @@ var connection = mysql.createConnection({
     host     : 'tfg.cl1ipfrnwi7j.us-east-2.rds.amazonaws.com',
     user     : 'root',
     password : 'rootroot',
-    database : 'espacio_libre_covid19'
+    database : 'espacio_libre_covid19',
+    port: 3306
   });
  
 connection.connect(function (err){
