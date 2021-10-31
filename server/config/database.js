@@ -1,10 +1,17 @@
 var mysql      = require('mysql');
+//Local
+// var connection = mysql.createConnection({
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'root',
+//   database : 'espacio_libre_covid19'
+// });
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'espacio_libre_covid19'
-});
+    host     : 'tfg.cl1ipfrnwi7j.us-east-2.rds.amazonaws.com',
+    user     : 'root',
+    password : 'rootroot',
+    database : 'espacio_libre_covid19'
+  });
  
 connection.connect(function (err){
     if(err){
