@@ -24,7 +24,8 @@ const Constantes = {
     HORA_INICIO: 'Hora de inicio',
     HORA_FIN: 'Hora de fin',
     HORAS_SEMANALES: 'Horas semanales',
-    STOCK_MINIMO: 'Stock mínimo'
+    STOCK_MINIMO: 'Stock mínimo',
+    MOTIVO_BAJA: 'Motivo',
 }
 
 module.exports = Constantes;

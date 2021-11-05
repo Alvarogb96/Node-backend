@@ -168,17 +168,17 @@ Usuario.updatePassword = function(id, usuario, result){
 };
 
 Usuario.validation = function(usuario){
-    if(usuario.nombre === null || usuario.nombre === undefined || usuario.nombre === ''){
+    if(usuario.nombre === null || usuario.nombre === undefined || usuario.nombre === '' || usuario.nombre.length > 40){
         return Constantes.NOMBRE;
-    } else if(usuario.apellido1 === null || usuario.apellido1 === undefined || usuario.apellido1 === ''){
+    } else if(usuario.apellido1 === null || usuario.apellido1 === undefined || usuario.apellido1 === '' || usuario.apellido1.length > 40){
         return Constantes.APELLIDO1;
-    } else if(usuario.apellido2 === null || usuario.apellido2 === undefined || usuario.apellido2 === ''){
+    } else if(usuario.apellido2 === null || usuario.apellido2 === undefined || usuario.apellido2 === '' || usuario.apellido2.length > 40){
         return Constantes.APELLIDO2;
-    } else if(usuario.nif === null || usuario.nif === undefined || usuario.nif === ''){
+    } else if(usuario.nif === null || usuario.nif === undefined || usuario.nif === '' || usuario.nif.length > 9){
         return Constantes.NIF;
     } else if(usuario.role === null || usuario.role === undefined || usuario.role === ''){
         return Constantes.ROLE;
-    } else if(usuario.email === null || usuario.email === undefined || usuario.email === ''){
+    } else if(usuario.email === null || usuario.email === undefined || usuario.email === '' || usuario.email.length > 100){
         return Constantes.EMAIL;
     } else{
         return true;
@@ -188,7 +188,7 @@ Usuario.validation = function(usuario){
 Usuario.validationUpdateDirectivo = function(usuario){
     if(usuario.role === null || usuario.role === undefined || usuario.role === ''){
         return Constantes.ROLE;
-    } else if(usuario.email === null || usuario.email === undefined || usuario.email === ''){
+    } else if(usuario.email === null || usuario.email === undefined || usuario.email === '' || usuario.email.length > 100){
         return Constantes.EMAIL;
     } else{
         return true;
@@ -196,11 +196,11 @@ Usuario.validationUpdateDirectivo = function(usuario){
 }
 
 Usuario.validationPassword = function(usuario){
-    if(usuario.password === null || usuario.password === undefined || usuario.password === ''){
+    if(usuario.password === null || usuario.password === undefined || usuario.password === ''|| usuario.password.length > 100){
         return Constantes.CAMPO_OBLIGATORIO;
-    } else if(usuario.newPassword === null || usuario.newPassword === undefined || usuario.newPassword === ''){
+    } else if(usuario.newPassword === null || usuario.newPassword === undefined || usuario.newPassword === ''|| usuario.newPassword.length > 100){
         return Constantes.CAMPO_OBLIGATORIO;
-    } else if(usuario.newPassword2 === null || usuario.newPassword2 === undefined || usuario.newPassword2 === ''){
+    } else if(usuario.newPassword2 === null || usuario.newPassword2 === undefined || usuario.newPassword2 === ''|| usuario.newPassword2.length > 100){
         return Constantes.CAMPO_OBLIGATORIO;
     } else {
         return true;

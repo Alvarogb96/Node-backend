@@ -83,8 +83,9 @@ Noticia.update = function(id,noticia, result){
 };
 
 Noticia.validation = function(noticia){
-    if(noticia.titulo === null || noticia.titulo === undefined || noticia.titulo === ''){
-    } else if(noticia.descripcion === null || noticia.descripcion === undefined || noticia.descripcion === ''){
+    if(noticia.titulo === null || noticia.titulo === undefined || noticia.titulo === '' || noticia.titulo.length > 45){
+        return Constantes.TITULO;
+    } else if(noticia.descripcion === null || noticia.descripcion === undefined || noticia.descripcion === '' || noticia.descripcion.length > 255){
         return Constantes.DESCRIPCION;
     } else{
         return true;

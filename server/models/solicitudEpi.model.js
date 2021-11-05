@@ -167,8 +167,7 @@ SolicitudEpi.update = function(id, solicitudEpi, result){
 SolicitudEpi.getSolicitudesAprobadas = function ( result) {
     const sql = 'SELECT MONTH(fecha_aprobacion) as mes, YEAR(fecha_aprobacion) as año,' +
     '( SELECT COUNT(*) FROM solicitudes_epi WHERE aprobada = "S" AND MONTH(fecha_aprobacion) like mes) as aprobadas,' + 
-    '( SELECT COUNT(*) FROM solicitudes_epi WHERE aprobada = "N" AND MONTH(fecha_aprobacion) like mes) as rechazadas, ' +
-    '( SELECT COUNT(*) FROM solicitudes_epi WHERE aprobada IS NULL AND MONTH(fecha_creacion) like mes) as revision ' +
+    '( SELECT COUNT(*) FROM solicitudes_epi WHERE aprobada = "N" AND MONTH(fecha_aprobacion) like mes) as rechazadas ' +
     'FROM solicitudes_epi '+
     'WHERE fecha_aprobacion IS NOT NULL ' +
     'GROUP BY MONTH(fecha_aprobacion), YEAR(fecha_aprobacion);';

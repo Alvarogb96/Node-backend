@@ -1,6 +1,7 @@
 const connection = require('../config/database');
 const multer = require('multer');
 var upload = multer({ dest: 'files/solicitudesBaja/' })
+const Constantes = require('../config/constantes');
 
 //Solicitud_Baja
 var SolicitudBaja= function(solicitudBaja){
@@ -144,5 +145,13 @@ SolicitudBaja.getBajasAnalisis = function ( result) {
         }
     });   
 };
+
+SolicitudBaja.validation = function(solicitudBaja){
+    if(solicitudBaja.motivo === null || solicitudBaja.motivo === undefined || solicitudBaja.motivo === '' || solicitudBaja.motivo.length > 255){
+        return Constantes.MOTIVO_BAJA;
+    } else{
+        return true;
+    } 
+}
 
 module.exports= SolicitudBaja;

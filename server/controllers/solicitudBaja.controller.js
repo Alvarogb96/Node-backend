@@ -59,15 +59,20 @@ exports.findByParameters = function (req, res) {
         });
 };
 
-exports.create =  function(req, res) {
+exports.create = function (req, res) {
     const solicitudBaja = new SolicitudBaja(req.body);
-        SolicitudBaja.create(solicitudBaja, function(err, solicitudBaja) {
+    var mensaje = SolicitudBaja.validation(solicitudBaja);
+    if (mensaje != true) {
+        res.status(400).send({ error: true, message: 'Valor incorrecto de ' + mensaje });
+    } else {
+        SolicitudBaja.create(solicitudBaja, function (err, solicitudBaja) {
             if (err) {
-                res.json({error:true,err});
-                } else {
-                    res.json({error:false,message:"Solicitud de baja añadida",data:solicitudBaja});
-                }
+                res.json({ error: true, err });
+            } else {
+                res.json({ error: false, message: "Solicitud de baja añadida", data: solicitudBaja });
+            }
         });
+    }
 };
 
 exports.update = function(req, res) {

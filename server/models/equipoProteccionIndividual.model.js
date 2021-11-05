@@ -134,7 +134,7 @@ EquipoProteccionIndividual.getEpisAnalisis= function (id, date, result) {
 EquipoProteccionIndividual.validation = function(epi){
     if(epi.id_tipo === null || epi.id_tipo === undefined || epi.id_tipo === ''){
         return Constantes.TIPO_EPI;
-    } else if(epi.lote === null || epi.lote === undefined || epi.lote === ''){
+    } else if(epi.lote === null || epi.lote === undefined || epi.lote === '' || epi.lote.length > 100){
         return Constantes.LOTE_EPI;
     } else if(epi.cantidad === null || epi.cantidad === undefined || epi.cantidad === ''){
         return Constantes.CANTIDAD_EPI;

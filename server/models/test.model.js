@@ -86,9 +86,9 @@ Test.update = function(id,test, result){
 };
 
 Test.validation = function(test){
-    if(test.resultado === null || test.resultado === undefined || test.resultado === ''){
+    if(test.resultado === null || test.resultado === undefined || test.resultado === '' || test.resultado.length > 45){
         return Constantes.RESULTADO_TEST;
-    } else if(test.clinica === null || test.clinica === undefined || test.clinica === ''){
+    } else if(test.clinica === null || test.clinica === undefined || test.clinica === '' || test.clinica.length > 100){
         return Constantes.CLINICA_TEST;
     } else if(test.fecha_test === null || test.fecha_test === undefined || test.fecha_test === ''){
         return Constantes.FECHA_TEST;
