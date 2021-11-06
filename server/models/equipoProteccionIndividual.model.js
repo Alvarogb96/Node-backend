@@ -117,7 +117,7 @@ EquipoProteccionIndividual.getEpisAnalisis= function (id, date, result) {
     const sql = 'SELECT tipos_epi.id_tipo_epi, descripcion, SUM(existencias) as cantidad, minimo ' + 
     'FROM equipos_proteccion_individual ' + 
     'INNER JOIN tipos_epi on tipos_epi.id_tipo_epi = equipos_proteccion_individual.id_tipo ' +
-    'INNER JOIN sucursales_stock_epi on sucursales_stock_epi.id_tipo_epi = tipos_epi.id_tipo_epi ' + 
+    'LEFT JOIN sucursales_stock_epi on sucursales_stock_epi.id_tipo_epi = tipos_epi.id_tipo_epi ' + 
     'where equipos_proteccion_individual.oculto is false AND equipos_proteccion_individual.id_sucursal = ? ' +
     'AND equipos_proteccion_individual.fecha_disponibilidad <= ? AND sucursales_stock_epi.id_sucursal = ? ' +
     'GROUP BY id_tipo, minimo;';
