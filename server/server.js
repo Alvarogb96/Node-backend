@@ -9,7 +9,7 @@ const server = app.listen(app.get('port'), () => {
     console.log('Server on port ', app.get('port'));
 });
 
-server.keepAliveTimeout = 65000;
+
 
 //MIDDLEWARES
 app.use(express.json());

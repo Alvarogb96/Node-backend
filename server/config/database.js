@@ -4,13 +4,15 @@ var mysql      = require('mysql');
 //   host     : 'localhost',
 //   user     : 'root',
 //   password : 'root',
-//   database : 'espacio_libre_covid19'
+//   database : 'tfg_database'
 // });
+
+//Prod
 var connection = mysql.createConnection({
-    host     : 'tfg.cl1ipfrnwi7j.us-east-2.rds.amazonaws.com',
+    host     : 'tfg.cxx0lf4ek1mi.us-east-2.rds.amazonaws.com',
     user     : 'root',
     password : 'rootroot',
-    database : 'espacio_libre_covid19',
+    database : 'tfg_database',
     port: 3306
   });
  
